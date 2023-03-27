@@ -43,3 +43,29 @@ def ucs(start: State, is_goal: Callable[[State], bool], expand: Callable[[State]
             queue.put((cost + child_cost, child))
 
     return None
+
+
+if __name__ == '__main__':
+    # define the graph
+    graph = {
+        'A': [('B', 1), ('C', 2)],
+        'B': [('D', 3)],
+        'C': [('D', 1)],
+        'D': [('E', 1)],
+        'E': []
+    }
+
+    # define the goal
+    goal = 'E'
+
+    # define the expand function
+    def expand(node: str) -> List[Tuple[str, float]]:
+        return graph[node]
+
+    # define the is_goal function
+    def is_goal(node: str) -> bool:
+        return node == goal
+
+    # run the search
+    result = ucs('A', is_goal, expand)
+    print(result)
