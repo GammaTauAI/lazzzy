@@ -6,7 +6,7 @@ State = TypeVar('State')
 
 
 def ucs(start: State, is_goal: Callable[[State], bool], expand: Callable[[State], List[Tuple[State, float]]]) -> State | None:
-    """Uniform Cost Search on a tree.
+    """Lazy Uniform Cost Search.
 
     Args:
         start: start node
@@ -24,11 +24,17 @@ def ucs(start: State, is_goal: Callable[[State], bool], expand: Callable[[State]
     # start up the queue
     queue = PriorityQueue()
     queue.put((0, start))
+    visited = set()
 
     while not queue.empty():
         cost, node = queue.get()
+        visited.add(node)
 
         for child, child_cost in expand(node):
+            # skip if already visited
+            if child in visited:
+                continue
+
             # check if it's goal
             if is_goal(child):
                 return child
