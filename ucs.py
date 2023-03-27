@@ -17,7 +17,7 @@ def ucs(
         start: start node
         is_goal: function to check if a node is the goal node
         expand: function to expand a node, returns a list of (child, cost) pairs
-        get_unique_id: function to get a unique id for a node
+        get_unique_id (optional): function to get a unique id for a node
 
     Returns:
         The goal node when found. Returns None if no path is found.
@@ -55,7 +55,7 @@ if __name__ == '__main__':
     # define the graph
     graph = {
         'A': [('B', 1), ('C', 2)],
-        'B': [('D', 3)],
+        'B': [('D', 3), ('A', 0)],
         'C': [('D', 1)],
         'D': [('E', 1)],
         'E': []
