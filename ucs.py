@@ -1,5 +1,5 @@
 from queue import PriorityQueue
-from typing import Callable, List, TypeVar, Tuple
+from typing import Callable, List, Set, TypeVar, Tuple
 
 
 State = TypeVar('State')
@@ -8,7 +8,7 @@ UniqueID = TypeVar('UniqueID')
 
 def ucs(
     start: State, is_goal: Callable[[State], bool],
-    expand: Callable[[State], List[Tuple[State, float]]],
+    expand: Callable[[State], Set[Tuple[State, float]]],
     get_unique_id: Callable[[State], UniqueID] = lambda x: x
 ) -> State | None:
     """Lazy Uniform Cost Search.
@@ -54,18 +54,18 @@ def ucs(
 if __name__ == '__main__':
     # define the graph
     graph = {
-        'A': [('B', 1), ('C', 2)],
-        'B': [('D', 3), ('A', 0)],
-        'C': [('D', 1)],
-        'D': [('E', 1)],
-        'E': []
+        'A': set([('B', 1), ('C', 2)]),
+        'B': set([('D', 3), ('A', 0)]),
+        'C': set([('D', 1)]),
+        'D': set([('E', 1)]),
+        'E': set(),
     }
 
     # define the goal
     goal = 'E'
 
     # define the expand function
-    def expand(node: str) -> List[Tuple[str, float]]:
+    def expand(node: str) -> Set[Tuple[str, float]]:
         return graph[node]
 
     # define the is_goal function
