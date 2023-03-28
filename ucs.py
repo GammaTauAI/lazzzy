@@ -1,5 +1,5 @@
 from heapq import heappush, heappop
-from typing import Callable, List, Set, TypeVar, Tuple, Any
+from typing import Callable, List, Set, TypeVar, Tuple, Any, Optional
 
 
 State = TypeVar('State')
@@ -12,7 +12,7 @@ def ucs(
     expand: Callable[[State], Set[Tuple[State, float]]],
     get_unique_id: Callable[[State], UniqueID] = lambda x: x,
     when_none: Callable[[List[State]], Any] = lambda x: None,
-) -> State | None:
+) -> Optional[State]:
     """Lazy Uniform Cost Search.
 
     Args:
