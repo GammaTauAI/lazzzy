@@ -1,4 +1,4 @@
-from queue import PriorityQueue
+from heapq import heappush, heappop
 from typing import Callable, List, Set, TypeVar, Tuple, Any
 
 
@@ -31,13 +31,16 @@ def ucs(
         return start
 
     # start up the queue
-    queue = PriorityQueue()
-    queue.put((0, start))
+    queue = []
+
+    # hack for unhashable types. Python is so well designed!
+    class CmpFalse(object): __eq__ = __lt__ = __gt__ = lambda s,o: False
+    heappush(queue, (0, CmpFalse(), start))
     all_visited: List[State] = [start]
     visited_dedup: set[UniqueID] = set()
 
-    while not queue.empty():
-        cost, node = queue.get()
+    while not len(queue) == 0:
+        cost, _, node = heappop(queue)
         visited_dedup.add(get_unique_id(node))
         all_visited.append(node)
 
@@ -51,7 +54,7 @@ def ucs(
                 return child
 
             # add to queue
-            queue.put((cost + child_cost, child))
+            heappush(queue, (cost + child_cost, CmpFalse(), child))
 
     return when_none(all_visited)
 
